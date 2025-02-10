@@ -1,0 +1,49 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/audioView"
+  ],
+  "usingComponents": {
+    "van-search": "wxcomponents/vant/search/index",
+    "van-grid": "wxcomponents/vant/grid/index",
+    "van-grid-item": "wxcomponents/vant/grid-item/index",
+    "van-popup": "wxcomponents/vant/popup/index",
+    "van-cell": "wxcomponents/vant/cell/index",
+    "van-tabbar": "wxcomponents/vant/tabbar/index",
+    "van-tabbar-item": "wxcomponents/vant/tabbar-item/index",
+    "van-icon": "wxcomponents/vant/icon/index",
+    "van-button": "wxcomponents/vant/button/index",
+    "van-nav-bar": "wxcomponents/vant/nav-bar/index",
+    "van-image": "wxcomponents/vant/image/index",
+    "van-tag": "wxcomponents/vant/tag/index",
+    "van-cell-group": "wxcomponents/vant/cell-group/index",
+    "van-transition": "wxcomponents/vant/transition/index",
+    "van-submit-bar": "wxcomponents/vant/submit-bar/index"
+  },
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "聊天",
+        "iconPath": "static/chat.png",
+        "selectedIconPath": "static/chat_active.png"
+      },
+      {
+        "pagePath": "pages/audioView",
+        "text": "音频",
+        "iconPath": "static/audio.png",
+        "selectedIconPath": "static/audio_active.png"
+      }
+    ],
+    "color": "#999",
+    "selectedColor": "#007AFF",
+    "backgroundColor": "#fff",
+    "borderStyle": "black"
+  }
+}
