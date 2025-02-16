@@ -1,1 +1,0 @@
-<view class="chat-container data-v-2ed22421"><message-list wx:if="{{b}}" class="data-v-2ed22421" bindloadMore="{{a}}" u-i="2ed22421-0" bind:__l="__l" u-p="{{b}}"/><input-field class="data-v-2ed22421" bindsend="{{c}}" bindimageSelected="{{d}}" u-i="2ed22421-1" bind:__l="__l"/></view>

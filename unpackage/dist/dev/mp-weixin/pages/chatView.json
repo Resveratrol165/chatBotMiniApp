@@ -1,7 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "message-list": "../components/MessageList",
-    "input-field": "../components/InputField"
-  }
-}

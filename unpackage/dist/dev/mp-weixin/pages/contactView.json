@@ -1,6 +1,6 @@
 {
   "navigationBarTitleText": "聊天",
   "usingComponents": {
-    "chat-view": "../chatView"
+    "contact-component": "../components/contactComponent"
   }
 }

@@ -1,7 +1,7 @@
 {
-	"pages": [ 
+	"pages": [
 		{
-			"path": "pages/index/index",
+			"path": "pages/contactView",
 			"style": {
 				"navigationBarTitleText": "聊天"
 			}
@@ -13,26 +13,6 @@
 			}
 		}
 	],
-	"tabBar": {
-		"list": [
-			{
-				"pagePath": "pages/index/index",
-				"text": "聊天",
-				"iconPath": "static/chat.png",
-				"selectedIconPath": "static/chat_active.png"
-			},
-			{
-				"pagePath": "pages/audioView",
-				"text": "音频",
-				"iconPath":"static/audio.png",
-				"selectedIconPath": "static/audio_active.png"
-			}
-		],
-		"color": "#999",
-		"selectedColor": "#007AFF",
-		"backgroundColor": "#fff",
-		"borderStyle": "black"
-	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

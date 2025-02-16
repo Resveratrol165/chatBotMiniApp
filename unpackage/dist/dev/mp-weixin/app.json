@@ -1,6 +1,6 @@
 {
   "pages": [
-    "pages/index/index",
+    "pages/contactView",
     "pages/audioView"
   ],
   "usingComponents": {
@@ -25,25 +25,5 @@
     "navigationBarTitleText": "uni-app",
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
-  },
-  "tabBar": {
-    "list": [
-      {
-        "pagePath": "pages/index/index",
-        "text": "聊天",
-        "iconPath": "static/chat.png",
-        "selectedIconPath": "static/chat_active.png"
-      },
-      {
-        "pagePath": "pages/audioView",
-        "text": "音频",
-        "iconPath": "static/audio.png",
-        "selectedIconPath": "static/audio_active.png"
-      }
-    ],
-    "color": "#999",
-    "selectedColor": "#007AFF",
-    "backgroundColor": "#fff",
-    "borderStyle": "black"
   }
 }
