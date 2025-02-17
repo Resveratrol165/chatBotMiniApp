@@ -1,1 +1,0 @@
-<view class="contact-item data-v-8323ab56" bindtap="{{e}}"><view class="avatar data-v-8323ab56"><image class="data-v-8323ab56" src="{{a}}" alt="{{b}}"></image></view><view class="info data-v-8323ab56"><view class="name data-v-8323ab56">{{c}}</view><view class="description data-v-8323ab56">{{d}}</view></view></view>
