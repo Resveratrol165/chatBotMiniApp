@@ -17,10 +17,10 @@ const _sfc_main = {
     };
     return (_ctx, _cache) => {
       return {
-        a: __props.bot.avatar,
-        b: __props.bot.name,
-        c: common_vendor.t(__props.bot.name),
-        d: common_vendor.t(__props.bot.description),
+        a: __props.bot.config.avatar,
+        b: __props.bot.config.name,
+        c: common_vendor.t(__props.bot.config.name),
+        d: common_vendor.t(__props.bot.config.description),
         e: common_vendor.o(handleClick)
       };
     };

@@ -11,6 +11,13 @@
 			"style": {
 				"navigationBarTitleText": "音频"
 			}
+		},
+		{
+			"path": "pages/addBotView",
+			"style": {
+				"navigationBarTitleText": "添加机器人",
+				"navigationBarTextStyle": "black"
+			}
 		}
 	],
 	"globalStyle": {

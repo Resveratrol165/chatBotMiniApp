@@ -136,20 +136,33 @@ export const getBot = async (botId) => {
  */
 export const newBot = async (botInfo) => {
   try {
-    const botId = 'bot_' + Date.now();
+    const botId = "bot_" + Date.now();
     const config = {
       ...botInfo,
-      createTime: new Date().toISOString()
+      createTime: (/* @__PURE__ */ new Date()).toISOString()
     };
     
-    // 创建新的Bot实例
+    // 创建新机器人
     const bot = new Bot(botId, config);
     
-    // 保存配置
+    // 保存机器人配置
     await setStorageData(`${BOT_STORAGE_KEY}_${botId}`, config);
     
-    // 更新列表
-    const currentList = await getStorageData(BOT_LIST_KEY) || [];
+    // 获取现有列表，如果获取失败则初始化为空数组
+    let currentList = [];
+    try {
+      currentList = await getStorageData(BOT_LIST_KEY) || [];
+    } catch (error) {
+      // 如果是数据不存在的错误，使用空数组继续
+      if (error.errMsg && error.errMsg.includes('data not found')) {
+        currentList = [];
+      } else {
+        // 其他错误则抛出
+        throw error;
+      }
+    }
+    
+    // 创建列表项
     const listItem = {
       id: botId,
       name: botInfo.name,
@@ -157,6 +170,8 @@ export const newBot = async (botInfo) => {
       description: botInfo.description,
       createTime: config.createTime
     };
+    
+    // 保存更新后的列表
     await setStorageData(BOT_LIST_KEY, [...currentList, listItem]);
     
     return bot;

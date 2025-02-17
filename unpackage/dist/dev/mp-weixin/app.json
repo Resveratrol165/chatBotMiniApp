@@ -1,7 +1,8 @@
 {
   "pages": [
     "pages/contactView",
-    "pages/audioView"
+    "pages/audioView",
+    "pages/addBotView"
   ],
   "usingComponents": {
     "van-search": "wxcomponents/vant/search/index",

@@ -1,5 +1,6 @@
 "use strict";
 const common_vendor = require("../common/vendor.js");
+const model_bot_model = require("../model/bot_model.js");
 if (!Math) {
   ContactComponent();
 }
@@ -7,32 +8,29 @@ const ContactComponent = () => "../components/contactComponent.js";
 const _sfc_main = {
   __name: "contactView",
   setup(__props) {
-    const botList = common_vendor.ref([
-      {
-        id: "test_bot_1",
-        name: "Claude AI",
-        avatar: "/static/images/claude.png",
-        description: "由 Anthropic 开发的 AI 助手"
-      },
-      {
-        id: "test_bot_2",
-        name: "GPT Assistant",
-        avatar: "/static/images/gpt.png",
-        description: "智能对话助手，擅长编程和写作"
-      },
-      {
-        id: "test_bot_3",
-        name: "文心一言",
-        avatar: "/static/images/wenxin.png",
-        description: "百度研发的知识增强大模型"
+    const botList = common_vendor.ref([]);
+    const fetchBotList = async () => {
+      try {
+        botList.value = await model_bot_model.getBotList();
+      } catch (error) {
+        common_vendor.index.__f__("error", "at pages/contactView.vue:33", "获取机器人列表失败:", error);
+        common_vendor.index.showToast({
+          title: "获取列表失败",
+          icon: "none"
+        });
       }
-    ]);
+    };
     const handleBotSelect = (bot) => {
-      common_vendor.index.__f__("log", "at pages/contactView.vue:48", "选择了机器人:", bot);
+      common_vendor.index.__f__("log", "at pages/contactView.vue:42", "选择了机器人:", bot);
     };
     const handleAddBot = () => {
-      common_vendor.index.__f__("log", "at pages/contactView.vue:52", "添加新机器人");
+      common_vendor.index.navigateTo({
+        url: "/pages/addBotView"
+      });
     };
+    common_vendor.onShow(() => {
+      fetchBotList();
+    });
     return (_ctx, _cache) => {
       return {
         a: common_vendor.o(handleAddBot),

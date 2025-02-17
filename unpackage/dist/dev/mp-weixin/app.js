@@ -4,6 +4,7 @@ const common_vendor = require("./common/vendor.js");
 if (!Math) {
   "./pages/contactView.js";
   "./pages/audioView.js";
+  "./pages/addBotView.js";
 }
 const _sfc_main = {
   onLaunch: function() {

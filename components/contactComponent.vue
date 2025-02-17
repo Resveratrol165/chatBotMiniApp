@@ -1,19 +1,16 @@
 <template>
   <div class="contact-item" @click="handleClick">
     <div class="avatar">
-      <img :src="bot.avatar" :alt="bot.name">
+      <img :src="bot.config.avatar" :alt="bot.config.name">
     </div>
     <div class="info">
-      <div class="name">{{ bot.name }}</div>
-      <div class="description">{{ bot.description }}</div>
+      <div class="name">{{ bot.config.name }}</div>
+      <div class="description">{{ bot.config.description }}</div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { getBotList } from '../model/bot_model'
-import ContactComponent from '../components/contactComponent.vue'
 
 const props = defineProps({
   bot: {

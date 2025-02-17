@@ -18,49 +18,40 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
+import { onShow } from '@dcloudio/uni-app'
 import { getBotList } from '../model/bot_model'
 import ContactComponent from '../components/contactComponent.vue'
 
-const botList = ref([
-  {
-    id: 'test_bot_1',
-    name: 'Claude AI',
-    avatar: '/static/images/claude.png',
-    description: '由 Anthropic 开发的 AI 助手'
-  },
-  {
-    id: 'test_bot_2',
-    name: 'GPT Assistant',
-    avatar: '/static/images/gpt.png',
-    description: '智能对话助手，擅长编程和写作'
-  },
-  {
-    id: 'test_bot_3',
-    name: '文心一言',
-    avatar: '/static/images/wenxin.png',
-    description: '百度研发的知识增强大模型'
+const botList = ref([])
+
+// 获取机器人列表的方法
+const fetchBotList = async () => {
+  try {
+    botList.value = await getBotList()
+  } catch (error) {
+    console.error('获取机器人列表失败:', error)
+    uni.showToast({
+      title: '获取列表失败',
+      icon: 'none'
+    })
   }
-])
+}
 
 const handleBotSelect = (bot) => {
-  // 处理机器人选择事件，可以跳转到聊天页面或其他操作
   console.log('选择了机器人:', bot)
 }
 
 const handleAddBot = () => {
-  console.log('添加新机器人')
-  // 这里可以添加创建新机器人的逻辑
+  uni.navigateTo({
+    url: '/pages/addBotView'
+  })
 }
 
-// 暂时注释掉实际的数据获取
-// onMounted(async () => {
-//   try {
-//     botList.value = await getBotList()
-//   } catch (error) {
-//     console.error('获取机器人列表失败:', error)
-//   }
-// })
+// 每次页面显示时刷新列表
+onShow(() => {
+  fetchBotList()
+})
 </script>
 
 <style scoped>
