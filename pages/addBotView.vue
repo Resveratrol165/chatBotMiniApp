@@ -6,7 +6,7 @@
         :class="{ disabled: !isFormValid }"
         @click="handleSave"
       >
-        <text>保存</text>
+        <text>{{ mode === 'new' ? '保存' : '更新' }}</text>
       </view>
     </view>
 
@@ -111,9 +111,11 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { newBot } from '../model/bot_model'
+import { ref, computed, onMounted } from 'vue'
+import { newBot, getBot } from '../model/bot_model'
 
+const mode = ref('new')
+const botId = ref(null)
 const formData = ref({
   name: '',
   avatar: '',
@@ -121,6 +123,28 @@ const formData = ref({
   greeting: '你好！我是你的AI助手，有什么我可以帮你的吗？',
   persona: '我是一个友好、专业的AI助手',
   background: ''
+})
+
+onMounted(async () => {
+  // 获取页面参数
+  const pages = getCurrentPages()
+  const currentPage = pages[pages.length - 1]
+  mode.value = currentPage.options.mode || 'new'
+  
+  // 如果是编辑模式且有 id 参数，获取机器人数据
+  if (mode.value === 'edit' && currentPage.options.id) {
+    botId.value = currentPage.options.id
+    try {
+      const bot = await getBot(currentPage.options.id)
+      formData.value = { ...bot.config }
+    } catch (error) {
+      console.error('获取机器人数据失败:', error)
+      uni.showToast({
+        title: '获取数据失败',
+        icon: 'none'
+      })
+    }
+  }
 })
 
 const isFormValid = computed(() => {
@@ -151,12 +175,18 @@ const handleSave = async () => {
   if (!isFormValid.value) return
 
   try {
-    await newBot(formData.value)
+    if (mode.value === 'new') {
+      await newBot(formData.value)
+    } else {
+      // 编辑模式下获取机器人实例并更新
+      const bot = await getBot(botId.value)
+      await bot.update(formData.value)
+    }
     uni.navigateBack()
   } catch (error) {
-    console.error('创建机器人失败:', error)
+    console.error(mode.value === 'new' ? '创建机器人失败:' : '更新机器人失败:', error)
     uni.showToast({
-      title: '创建失败',
+      title: mode.value === 'new' ? '创建失败' : '更新失败',
       icon: 'none'
     })
   }

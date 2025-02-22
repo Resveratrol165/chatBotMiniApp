@@ -18,6 +18,19 @@
 				"navigationBarTitleText": "添加机器人",
 				"navigationBarTextStyle": "black"
 			}
+		},
+		{
+			"path": "pages/botDetailView",
+			"style": {
+				"navigationBarTitleText": "机器人详情",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/chatView",
+			"style": {
+				"navigationBarTitleText": "聊天"
+			}
 		}
 	],
 	"globalStyle": {

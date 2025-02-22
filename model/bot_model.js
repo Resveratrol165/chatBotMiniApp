@@ -3,6 +3,7 @@ import { setStorageData, getStorageData } from '../utils/storage';
 // 存储键名常量
 const BOT_STORAGE_KEY = 'chatbot_config';
 const BOT_LIST_KEY = 'chatbot_list';  // 新增机器人列表的存储键名
+const BOT_CHAT_HISTORY_KEY = 'chatbot_history'; // 聊天记录的存储键名
 
 /**
  * Bot 数据结构
@@ -26,7 +27,7 @@ const DEFAULT_BOT_CONFIG = {
 /**
  * Bot 类 - 管理单个机器人的配置
  */
-class Bot {
+export class Bot {
   /**
    * @param {string} id - 机器人ID
    * @param {Object} config - 机器人配置
@@ -84,6 +85,35 @@ class Bot {
    */
   getConfig() {
     return this.config;
+  }
+
+  /**
+   * 删除机器人
+   * @returns {Promise<void>}
+   */
+  async delete() {
+    try {
+      // 从列表中删除
+      const list = await getStorageData(BOT_LIST_KEY) || [];
+      const updatedList = list.filter(item => item.id !== this.id);
+      await setStorageData(BOT_LIST_KEY, updatedList);
+      
+      // 删除配置
+      await uni.removeStorage({
+        key: `${BOT_STORAGE_KEY}_${this.id}`
+      });
+      
+      // 删除聊天记录
+      await removeBotChatHistory(this.id);
+    } catch (error) {
+      console.error('删除机器人失败:', error);
+      throw error;
+    }
+  }
+
+  async save() {
+    // 实现保存逻辑
+    await setStorageData(`${BOT_STORAGE_KEY}_${this.id}`, this.config);
   }
 }
 
@@ -238,5 +268,103 @@ export const updateBotConfig = async (updates) => {
   } catch (error) {
     console.error('更新机器人配置失败:', error);
     throw error;
+  }
+};
+
+/**
+ * 获取机器人的聊天记录
+ * @param {string} botId - 机器人ID
+ * @returns {Promise<Array>} 返回聊天记录数组
+ */
+export const getBotChatHistory = async (botId) => {
+  try {
+    const history = await getStorageData(`${BOT_CHAT_HISTORY_KEY}_${botId}`);
+    if (!history) {
+      throw new Error('data not found');
+    }
+    return history;
+  } catch (error) {
+    console.error(`获取机器人(${botId})聊天记录失败:`, error);
+    
+    // 如果是数据不存在的错误,或者存储读取失败,则返回欢迎消息
+    try {
+      const bot = await getBot(botId);
+      return [{
+        char: "BOT",
+        content: {
+          type: "Text",
+          message: bot.config.greeting
+        },
+        timestamp: Date.now()
+      }];
+    } catch (botError) {
+      console.error('获取机器人信息失败:', botError);
+      // 如果连机器人信息都获取失败,则返回空数组
+      return [];
+    }
+  }
+};
+
+/**
+ * 设置机器人的完整聊天记录
+ * @param {string} botId - 机器人ID
+ * @param {Array} chatHistory - 完整的聊天记录数组
+ * @returns {Promise<void>}
+ */
+export const setBotChatHistory = async (botId, chatHistory) => {
+  try {
+    await setStorageData(`${BOT_CHAT_HISTORY_KEY}_${botId}`, chatHistory);
+  } catch (error) {
+    console.error(`保存机器人(${botId})聊天记录失败:`, error);
+    throw error;
+  }
+};
+
+/**
+ * 更新机器人的聊天记录（添加新消息）
+ * @param {string} botId - 机器人ID
+ * @param {Object} newMessage - 新的聊天消息
+ * @returns {Promise<Array>} 返回更新后的完整聊天记录
+ */
+export const updateBotChatHistory = async (botId, newMessage) => {
+  try {
+    // 获取现有聊天记录
+    let chatHistory = await getBotChatHistory(botId);
+    
+    // 添加时间戳
+    const messageWithTimestamp = {
+      ...newMessage,
+      timestamp: Date.now()
+    };
+    
+    // 添加新消息
+    chatHistory = [...chatHistory, messageWithTimestamp];
+    
+    // 保存更新后的聊天记录
+    await setBotChatHistory(botId, chatHistory);
+    
+    return chatHistory;
+  } catch (error) {
+    console.error(`更新机器人(${botId})聊天记录失败:`, error);
+    throw error;
+  }
+};
+
+/**
+ * 删除机器人的聊天记录
+ * @param {string} botId - 机器人ID
+ * @returns {Promise<void>}
+ */
+export const removeBotChatHistory = async (botId) => {
+  try {
+    await uni.removeStorage({
+      key: `${BOT_CHAT_HISTORY_KEY}_${botId}`
+    });
+  } catch (error) {
+    console.error(`删除机器人(${botId})聊天记录失败:`, error);
+    // 如果是因为记录不存在导致的错误，我们可以忽略
+    if (!error.errMsg?.includes('data not found')) {
+      throw error;
+    }
   }
 };

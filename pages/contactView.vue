@@ -20,7 +20,7 @@
 <script setup>
 import { ref } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
-import { getBotList } from '../model/bot_model'
+import { getBotList, Bot } from '../model/bot_model'
 import ContactComponent from '../components/contactComponent.vue'
 
 const botList = ref([])
@@ -39,12 +39,16 @@ const fetchBotList = async () => {
 }
 
 const handleBotSelect = (bot) => {
-  console.log('选择了机器人:', bot)
+  // 将 bot 的 id 作为参数传递
+  uni.navigateTo({
+    url: `/pages/botDetailView?id=${bot.id}`
+  })
 }
 
 const handleAddBot = () => {
+  // 直接跳转到添加页面，不需要传递临时 bot
   uni.navigateTo({
-    url: '/pages/addBotView'
+    url: '/pages/addBotView?mode=new'
   })
 }
 

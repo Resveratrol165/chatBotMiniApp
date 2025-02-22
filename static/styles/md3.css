@@ -110,4 +110,259 @@
 /* 表单区域样式 */
 .form-fields {
   padding: 48rpx 0;
+}
+
+/* 页面容器 */
+.md3-page {
+  min-height: 100vh;
+  background-color: var(--md-sys-color-surface);
+  padding-bottom: 32rpx;
+  box-sizing: border-box;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* 顶部栏 */
+.md3-top-bar {
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  padding: 0 32rpx;
+  background: var(--md-sys-color-surface-container);
+}
+
+.md3-top-bar .title {
+  flex: 1;
+  font-size: 34rpx;
+  font-weight: 500;
+  margin-left: 16rpx;
+  color: var(--md-sys-color-on-surface);
+}
+
+.md3-top-bar .actions {
+  display: flex;
+  gap: 16rpx;
+}
+
+.md3-icon-button {
+  padding: 20rpx;
+}
+
+.md3-icon-button--error {
+  color: var(--md-sys-color-error);
+}
+
+/* 按钮基础样式 */
+.md3-button {
+  width: 100% !important;
+  height: 112rpx !important;
+  border: none !important;
+  border-radius: 56rpx !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 24rpx !important;
+  font-size: 32rpx !important;
+  font-weight: 500 !important;
+  padding: 0 48rpx !important;
+  margin: 0 !important;
+  line-height: normal !important;
+  background-color: transparent !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+/* 水波纹效果 */
+.md3-button::after {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 100%);
+  transform: scale(0);
+  opacity: 0;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
+              opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 主要按钮激活状态 */
+.md3-button--primary:active {
+  transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: var(--md-sys-color-primary-container) !important;
+}
+
+.md3-button--primary:active::after {
+  transform: scale(2);
+  opacity: 1;
+}
+
+/* 次要按钮激活状态 */
+.md3-button--secondary:active {
+  transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: var(--md-sys-color-surface) !important;
+}
+
+.md3-button--secondary:active::after {
+  transform: scale(2);
+  opacity: 1;
+  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+/* 按钮状态层 */
+.md3-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: currentColor;
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.md3-button:active::before {
+  opacity: 0.12;
+}
+
+/* 主要按钮 */
+.md3-button--primary {
+  background-color: var(--md-sys-color-primary) !important;
+  color: var(--md-sys-color-on-primary) !important;
+}
+
+/* 次要按钮 */
+.md3-button--secondary {
+  background-color: var(--md-sys-color-surface-variant) !important;
+  color: var(--md-sys-color-on-surface-variant) !important;
+}
+
+/* 按钮内的图标样式 */
+.md3-button .van-icon {
+  font-size: 48rpx !important;
+}
+
+/* 按钮内的文本样式 */
+.md3-button text {
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+
+/* 卡片容器 */
+.md3-card {
+  margin: 32rpx 24rpx;
+  padding: 32rpx;
+  border-radius: 24rpx;
+  background: var(--md-sys-color-surface-container);
+  box-sizing: border-box;
+}
+
+/* 详情部分 */
+.md3-detail-section {
+  margin-bottom: 40rpx;
+}
+
+.md3-detail-section__title {
+  font-size: 28rpx;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+.md3-detail-section__content {
+  font-size: 32rpx;
+  color: var(--md-sys-color-on-surface);
+  line-height: 1.5;
+}
+
+/* Material Design 3 颜色变量 */
+page {
+  /* 主色调 - 天蓝色 */
+  --md-sys-color-primary: #0288D1;           /* 主要颜色 */
+  --md-sys-color-primary-container: #B3E5FC; /* 主要颜色容器 */
+  --md-sys-color-on-primary: #FFFFFF;        /* 主要颜色上的文字 */
+  
+  /* 表面颜色 */
+  --md-sys-color-surface: #FFFFFF;           /* 表面 */
+  --md-sys-color-surface-variant: #E8F5E9;   /* 表面变体 */
+  --md-sys-color-surface-container: #F5F5F5; /* 表面容器 */
+  --md-sys-color-on-surface: #1F1F1F;        /* 表面上的文字 */
+  --md-sys-color-on-surface-variant: #666666;/* 表面变体上的文字 */
+  
+  /* 轮廓颜色 */
+  --md-sys-color-outline: #BDBDBD;           /* 轮廓 */
+  --md-sys-color-outline-variant: #E0E0E0;   /* 轮廓变体 */
+  
+  /* 错误颜色 */
+  --md-sys-color-error: #B00020;             /* 错误 */
+  --md-sys-color-on-error: #FFFFFF;          /* 错误上的文字 */
+  --md-sys-color-error-container: #FDEAEA;   /* 错误容器 */
+}
+
+/* 按钮容器样式 */
+.action-buttons {
+  padding: 32rpx 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+  box-sizing: border-box;
+}
+
+/* 详情部分 */
+.bot-details {
+  padding: 0 24rpx;
+  box-sizing: border-box;
+}
+
+/* 文本区域容器 */
+.md3-text-area {
+  width: 100%;
+  padding: 24rpx;
+  border-radius: 16rpx;
+  border: 2rpx solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface);
+  margin-bottom: 16rpx;
+  box-sizing: border-box;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 文本区域标题 */
+.md3-text-area__title {
+  font-size: 28rpx;
+  color: var(--md-sys-color-primary);
+  margin-bottom: 8rpx;
+  font-weight: 500;
+  display: block;
+}
+
+/* 文本区域内容 */
+.md3-text-area__content {
+  font-size: 32rpx;
+  color: var(--md-sys-color-on-surface);
+  line-height: 1.5;
+  white-space: pre-wrap;
+  display: block;
+  margin-top: 8rpx;
+}
+
+/* 错误按钮 */
+.md3-button--error {
+  background-color: var(--md-sys-color-error) !important;
+  color: var(--md-sys-color-on-error) !important;
+}
+
+/* 错误按钮激活状态 */
+.md3-button--error:active {
+  transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: var(--md-sys-color-error-container) !important;
+}
+
+.md3-button--error:active::after {
+  transform: scale(2);
+  opacity: 1;
 } 

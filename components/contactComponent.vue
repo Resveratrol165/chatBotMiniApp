@@ -1,5 +1,5 @@
 <template>
-  <div class="contact-item" @click="handleClick">
+  <div class="contact-item" @click="$emit('select', bot)">
     <div class="avatar">
       <img :src="bot.config.avatar" :alt="bot.config.name">
     </div>
@@ -20,10 +20,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['select'])
-
-const handleClick = () => {
-  emit('select', props.bot)
-}
 </script>
 
 <style scoped>
