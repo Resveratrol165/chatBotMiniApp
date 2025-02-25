@@ -40,6 +40,7 @@ const textareaHeight = ref(32)
 const MIN_HEIGHT = 32
 const MAX_HEIGHT = 120 // 增加最大高度
 const textareaRef = ref(null) // 添加 textarea 的 ref
+const imageServeUrl = 'http://10.64.68.86:37861/v1/files'
 
 // 调整文本框高度
 const adjustHeight = async () => {
@@ -67,10 +68,21 @@ const chooseImage = () => {
     sizeType: ['compressed'],
     sourceType: ['album', 'camera'],
     success: (res) => {
-      emit('image-selected', res.tempFilePaths[0])
+		console.log(res)
+		uni.uploadFile({
+			url: imageServeUrl, // 图片服务器
+			filePath: res.tempFilePaths[0],
+			name: 'file',
+			success: (uploadFileRes) => {
+			const data = JSON.parse(uploadFileRes.data);
+			console.log(data);
+			emit('image-selected', res.tempFilePaths[0], data.id)
+			}
+		});
     }
   })
 }
+
 </script>
 
 <style scoped>
