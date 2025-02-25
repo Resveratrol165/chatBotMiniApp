@@ -17,11 +17,21 @@ import { ref, onMounted } from 'vue'
 import MessageList from '@/components/MessageList.vue'
 import InputField from '@/components/InputField.vue'
 import { getBot, getBotChatHistory, updateBotChatHistory } from '../model/bot_model'
+import { request, post } from '@/utils/http_utils.js'
+import { getFomalData, formalMessage } from '@/utils/formalData.js'
 
 const loading = ref(false)
 const page = ref(1)
 const hasMore = ref(true)
 const bot = ref(null)
+
+// 多模态大模型请求相关参数
+const url = 'http://10.64.68.86:37861/chat/chat/completions';
+const header = {
+		"Content-Type": "application/json",
+		"Accept": "*/*",
+		"Connection": "keep-alive",
+}
 
 const chatData = ref({
   userName: '用户',
@@ -31,47 +41,51 @@ const chatData = ref({
   chat: []
 })
 
+
 // 处理发送消息
 const handleSendMessage = async (message) => {
-  const newMessage = {
-    char: "USER",
-    content: {
-      type: "Text",
-      message: message
-    }
-  }
-  
+  const newMessage = formalMessage('USER','Text',message)
+
   try {
     // 更新UI
     chatData.value.chat.push(newMessage)
-    
+	// 请求回应
+	const data = getFomalData(chatData.value.chat)
+	const result = await post(url, data, header)
+	const response = result["choices"][0]["message"]["content"]
+	const robotMes = formalMessage('SYSTEM','Text',response)
+	
+	// 更新UI
+	chatData.value.chat.push(robotMes)
     // 保存到存储
     await updateBotChatHistory(bot.value.id, newMessage)
   } catch (error) {
-    console.error('保存消息失败:', error)
+    console.error('返回消息失败:', error)
   }
 }
 
 // 处理图片选择
-const handleImageSelected = async (imagePath) => {
-  const newMessage = {
-    char: "USER",
-    content: {
-      type: "Image",
-      message: imagePath
-    }
-  }
-  
+const handleImageSelected = async (imagePath, id) => {
   try {
-    // 更新UI
-    chatData.value.chat.push(newMessage)
-    
+    // 封装imageUrl
+    const newID = `http://10.64.68.86:37861/v1/files/${id}==/content`;
+	const newMessage = formalMessage('USER','Image',imagePath,newID);
+	// 更新UI
+	chatData.value.chat.push(newMessage);
+	// 请求
+	const data = getFomalData(chatData.value.chat);
+	const result = await post(url, data, header)
+	const response = result["choices"][0]["message"]["content"]
+	const robotMes = formalMessage('SYSTEM','Text',response)
+	// 更新UI
+	chatData.value.chat.push(robotMes)
     // 保存到存储
     await updateBotChatHistory(bot.value.id, newMessage)
   } catch (error) {
     console.error('保存图片消息失败:', error)
   }
 }
+
 
 // 初始化聊天数据
 const initChat = async (botId) => {
@@ -111,6 +125,7 @@ const loadMoreMessages = async () => {
 }
 
 onMounted(() => {
+	// 获得页面参数id
   const pages = getCurrentPages()
   const currentPage = pages[pages.length - 1]
   const botId = currentPage.options.botId
