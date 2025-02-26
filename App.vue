@@ -15,4 +15,5 @@
 <style lang = "scss">
 	/*每个页面公共css */
 	@import "/wxcomponents/vant/common/index.wxss";
+	@import "/static/styles/md3.css";
 </style>

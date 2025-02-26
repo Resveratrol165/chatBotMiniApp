@@ -16,22 +16,13 @@
 import { ref, onMounted } from 'vue'
 import MessageList from '@/components/MessageList.vue'
 import InputField from '@/components/InputField.vue'
-import { getBot, getBotChatHistory, updateBotChatHistory } from '../model/bot_model'
-import { request, post } from '@/utils/http_utils.js'
-import { getFomalData, formalMessage } from '@/utils/formalData.js'
+import { getBot, getBotChatHistory } from '../model/bot_model'
+import api from '@/utils/api.js'
 
 const loading = ref(false)
 const page = ref(1)
 const hasMore = ref(true)
 const bot = ref(null)
-
-// 多模态大模型请求相关参数
-const url = 'http://10.64.68.86:37861/chat/chat/completions';
-const header = {
-		"Content-Type": "application/json",
-		"Accept": "*/*",
-		"Connection": "keep-alive",
-}
 
 const chatData = ref({
   userName: '用户',
@@ -41,51 +32,36 @@ const chatData = ref({
   chat: []
 })
 
-
 // 处理发送消息
 const handleSendMessage = async (message) => {
-  const newMessage = formalMessage('USER','Text',message)
-
   try {
-    // 更新UI
-    chatData.value.chat.push(newMessage)
-	// 请求回应
-	const data = getFomalData(chatData.value.chat)
-	const result = await post(url, data, header)
-	const response = result["choices"][0]["message"]["content"]
-	const robotMes = formalMessage('SYSTEM','Text',response)
-	
-	// 更新UI
-	chatData.value.chat.push(robotMes)
-    // 保存到存储
-    await updateBotChatHistory(bot.value.id, newMessage)
+    await api.chat.sendTextMessage(chatData.value.chat, message, bot.value.id, bot.value.config)
   } catch (error) {
-    console.error('返回消息失败:', error)
+    console.error('发送消息失败:', error)
+    uni.showToast({
+      title: '发送消息失败',
+      icon: 'none'
+    })
   }
 }
 
 // 处理图片选择
 const handleImageSelected = async (imagePath, id) => {
   try {
-    // 封装imageUrl
-    const newID = `http://10.64.68.86:37861/v1/files/${id}==/content`;
-	const newMessage = formalMessage('USER','Image',imagePath,newID);
-	// 更新UI
-	chatData.value.chat.push(newMessage);
-	// 请求
-	const data = getFomalData(chatData.value.chat);
-	const result = await post(url, data, header)
-	const response = result["choices"][0]["message"]["content"]
-	const robotMes = formalMessage('SYSTEM','Text',response)
-	// 更新UI
-	chatData.value.chat.push(robotMes)
-    // 保存到存储
-    await updateBotChatHistory(bot.value.id, newMessage)
+    await api.chat.sendImageMessage(chatData.value.chat, imagePath, id, bot.value.id, bot.value.config)
   } catch (error) {
-    console.error('保存图片消息失败:', error)
+    console.error('发送图片消息失败:', error)
+    uni.showToast({
+      title: '发送图片消息失败',
+      icon: 'none'
+    })
   }
 }
 
+// 返回上一页
+const goBack = () => {
+  uni.navigateBack()
+}
 
 // 初始化聊天数据
 const initChat = async (botId) => {
@@ -125,7 +101,7 @@ const loadMoreMessages = async () => {
 }
 
 onMounted(() => {
-	// 获得页面参数id
+  // 获得页面参数id
   const pages = getCurrentPages()
   const currentPage = pages[pages.length - 1]
   const botId = currentPage.options.botId
@@ -141,11 +117,43 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
+<style>
+@import '../static/styles/md3.css';
+
 .chat-container {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #f5f5f5;
+  background-color: var(--md-sys-color-surface);
+}
+
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32rpx;
+  height: 88rpx;
+  background-color: var(--md-sys-color-surface);
+  border-bottom: 2rpx solid var(--md-sys-color-outline-variant);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding-top: env(safe-area-inset-top);
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+}
+
+.nav-title {
+  font-size: 36rpx;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
 }
 </style>

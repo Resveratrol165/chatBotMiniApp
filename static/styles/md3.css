@@ -365,4 +365,222 @@ page {
 .md3-button--error:active::after {
   transform: scale(2);
   opacity: 1;
+}
+
+/* 聊天消息组件的Material Design You风格样式 */
+.message-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 24rpx;
+  gap: 16rpx;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.message-right {
+  flex-direction: row-reverse;
+}
+
+.avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 40rpx;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1);
+}
+
+.avatar image {
+  width: 100%;
+  height: 100%;
+}
+
+.message-content {
+  max-width: 70%;
+}
+
+.name {
+  font-size: 24rpx;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 8rpx;
+  font-weight: 500;
+}
+
+.message-right .name {
+  text-align: right;
+}
+
+.bubble {
+  background-color: var(--md-sys-color-surface-container);
+  padding: 24rpx 32rpx;
+  border-radius: 24rpx;
+  border-top-left-radius: 4rpx;
+  font-size: 28rpx;
+  line-height: 1.5;
+  word-break: break-word;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.08);
+  color: var(--md-sys-color-on-surface);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bubble-right {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-top-left-radius: 24rpx;
+  border-top-right-radius: 4rpx;
+}
+
+.message-image {
+  max-width: 400rpx;
+  border-radius: inherit;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bubble .message-image {
+  margin: -24rpx -32rpx;
+  border-radius: inherit;
+}
+
+.audio-message {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  min-width: 240rpx;
+}
+
+.audio-duration {
+  font-size: 28rpx;
+}
+
+/* 消息动画效果 */
+@keyframes message-appear {
+  from {
+    opacity: 0;
+    transform: translateY(20rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-item {
+  animation: message-appear 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 图片预览效果 */
+.message-image:active {
+  opacity: 0.8;
+  transform: scale(0.98);
+}
+
+/* 音频消息交互效果 */
+.audio-message:active {
+  opacity: 0.8;
+}
+
+/* 聊天界面顶部导航栏 */
+.chat-nav {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 32rpx;
+  background-color: var(--md-sys-color-surface);
+  border-bottom: 2rpx solid var(--md-sys-color-outline-variant);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: 100rpx;
+  box-sizing: border-box;
+}
+
+.chat-nav__back {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chat-nav__back:active {
+  background-color: var(--md-sys-color-surface-variant);
+}
+
+.chat-nav__title {
+  flex: 1;
+  font-size: 36rpx;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  text-align: center;
+  margin: 0 20rpx;
+}
+
+.chat-nav__actions {
+  display: flex;
+  gap: 16rpx;
+}
+
+.chat-nav__action {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chat-nav__action:active {
+  background-color: var(--md-sys-color-surface-variant);
+}
+
+/* 优化聊天气泡样式 */
+.bubble {
+  background-color: var(--md-sys-color-surface-container);
+  padding: 24rpx 32rpx;
+  border-radius: 28rpx;
+  border-top-left-radius: 4rpx;
+  font-size: 32rpx;
+  line-height: 1.5;
+  word-break: break-word;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+  color: var(--md-sys-color-on-surface);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: 100%;
+}
+
+.bubble-right {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-top-left-radius: 28rpx;
+  border-top-right-radius: 4rpx;
+}
+
+/* 优化头像样式 */
+.avatar {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 44rpx;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1);
+  border: 2rpx solid var(--md-sys-color-outline-variant);
+}
+
+/* 优化消息内容样式 */
+.message-content {
+  max-width: 70%;
+}
+
+/* 优化音频消息样式 */
+.audio-message {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  min-width: 240rpx;
+  padding: 8rpx 0;
+}
+
+.audio-duration {
+  font-size: 28rpx;
 } 

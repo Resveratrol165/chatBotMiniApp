@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { ref, watch,nextTick } from 'vue'
+import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import ChatMessage from './ChatMessage.vue'
 
 const props = defineProps({
@@ -41,6 +41,7 @@ const props = defineProps({
 const emit = defineEmits(['load-more'])
 
 const scrollTop = ref(0)
+const inputHeight = ref(120) // 默认输入框高度
 
 // 监听消息列表变化，自动滚动到底部
 watch(
@@ -62,25 +63,48 @@ watch(
 const handleScrollToUpper = () => {
   emit('load-more')
 }
+
+// 监听输入框高度变化
+const handleInputHeightChange = (height) => {
+  inputHeight.value = height + 48 // 加上padding
+  // 滚动到底部
+  nextTick(() => {
+    scrollTop.value = 99999
+  })
+}
+
+onMounted(() => {
+  uni.$on('input-height-changed', handleInputHeightChange)
+})
+
+onUnmounted(() => {
+  uni.$off('input-height-changed', handleInputHeightChange)
+})
 </script>
 
-<style scoped>
+<style>
+@import '../static/styles/md3.css';
+
 .message-list-container {
   flex: 1;
-  height: calc(100vh - 60px - env(safe-area-inset-bottom));
+  height: calc(100vh - 120rpx - env(safe-area-inset-bottom));
+  background-color: var(--md-sys-color-surface);
+  padding-bottom: 120rpx; /* 为输入框留出空间 */
 }
 
 .loading-more {
   text-align: center;
-  padding: 10px 0;
-  color: #999;
-  font-size: 14px;
+  padding: 20rpx 0;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 28rpx;
+  font-weight: 500;
 }
 
 .messages-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 20px;
+  gap: 32rpx;
+  padding: 40rpx;
+  padding-bottom: 120rpx; /* 确保底部有足够空间，不被输入框遮挡 */
 }
 </style> 
