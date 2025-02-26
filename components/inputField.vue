@@ -1,6 +1,6 @@
 <template>
   <div class="input-container">
-    <div class="input-wrapper">
+    <div class="input-wrapper" :class="{ 'input-active': inputText.trim().length > 0 }">
       <textarea
         ref="textareaRef"
         class="input-field"
@@ -14,14 +14,14 @@
       />
       <div class="action-buttons">
         <button class="image-btn" @tap="chooseImage">
-          <van-icon name="photo-o" size="48rpx" />
+          <van-icon name="photo-o" size="44rpx" />
         </button>
         <button 
           class="send-btn" 
           :class="{ 'send-btn-active': inputText.trim().length > 0 }"
           @tap="sendMessage"
         >
-          <van-icon name="guide-o" size="48rpx" />
+          <van-icon name="guide-o" size="44rpx" />
         </button>
       </div>
     </div>
@@ -105,20 +105,33 @@ const chooseImage = () => {
   left: 0;
   right: 0;
   background-color: var(--md-sys-color-surface-container);
-  padding: 24rpx;
+  padding: 16rpx 24rpx;
   padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
-  border-top: 2rpx solid var(--md-sys-color-outline-variant);
   z-index: 100;
   box-sizing: border-box;
+  border-top-left-radius: 32rpx;
+  border-top-right-radius: 32rpx;
+  box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
 }
 
 .input-wrapper {
   display: flex;
   background-color: var(--md-sys-color-surface);
-  border-radius: 32rpx;
-  padding: 16rpx 24rpx;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  border-radius: 28rpx;
+  padding: 12rpx 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06), 
+              inset 0 0 0 2rpx var(--md-sys-color-outline-variant);
   align-items: flex-start;
+  margin: 8rpx 0;
+  transition: all 0.3s ease;
+}
+
+.input-active {
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08), 
+              inset 0 0 0 2rpx var(--md-sys-color-primary-container);
+  background-color: var(--md-sys-color-surface-bright);
 }
 
 .input-field {
@@ -138,57 +151,96 @@ const chooseImage = () => {
   word-break: break-all;
   white-space: pre-wrap;
   width: 100%;
+  transition: all 0.2s ease;
 }
 
 .action-buttons {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: 16rpx;
-  padding: 8rpx;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 12rpx;
+  padding: 4rpx;
   margin-left: 8rpx;
-  height: 100%;
 }
 
 .image-btn, .send-btn {
   background: transparent;
   border: none;
-  padding: 12rpx;
+  padding: 10rpx;
   margin: 0;
   line-height: 1;
   height: auto;
-  width: 72rpx;
-  height: 72rpx;
+  width: 68rpx;
+  height: 68rpx;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.image-btn:active, .send-btn:active {
+.image-btn {
   background-color: var(--md-sys-color-surface-variant);
-  transform: scale(0.95);
 }
 
 .send-btn {
   opacity: 0.5;
+  background-color: var(--md-sys-color-surface-variant);
+  transform: scale(0.9);
+}
+
+.image-btn:active, .send-btn:active {
+  background-color: var(--md-sys-color-primary-container);
+  transform: scale(0.95);
 }
 
 .send-btn-active {
   opacity: 1;
+  background-color: var(--md-sys-color-primary-container);
+  transform: scale(1);
 }
 
 /* 修改图标颜色，使用Material Design变量 */
 .image-btn .van-icon {
   color: var(--md-sys-color-on-surface-variant) !important;
+  transition: all 0.2s ease;
 }
 
 .send-btn .van-icon {
   color: var(--md-sys-color-on-surface-variant) !important;
+  transition: all 0.2s ease;
 }
 
 .send-btn-active .van-icon {
   color: var(--md-sys-color-primary) !important;
+}
+
+/* 添加焦点样式 */
+.input-wrapper:focus-within {
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1), 
+              inset 0 0 0 2rpx var(--md-sys-color-primary);
+}
+
+/* 添加占位符样式 */
+.input-field::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.input-field:focus::placeholder {
+  opacity: 0.5;
+}
+
+@media (prefers-color-scheme: dark) {
+  .input-container {
+    box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.2);
+  }
+  
+  .input-wrapper {
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.15), 
+                inset 0 0 0 2rpx rgba(255, 255, 255, 0.1);
+  }
 }
 </style>
