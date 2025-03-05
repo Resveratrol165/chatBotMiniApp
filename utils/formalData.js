@@ -18,7 +18,7 @@ export const getFomalData = (messages = [], systemPrompt = '') => {
 	// 如果有系统提示，添加到消息列表的开头
 	if (systemPrompt) {
 		chat_histories.push({
-			'role': 'SYSTEM',
+			'role': 'system',
 			'content': systemPrompt
 		});
 	}
@@ -41,13 +41,10 @@ export const getFomalData = (messages = [], systemPrompt = '') => {
 		}else if(mes.content.type == 'Text')
 			content = mes.content.message
 			
-		// 根据角色设置正确的role值
 		let role;
-		if (mes.char === 'USER') {
-			role = 'USER';
-		} else if (mes.char === 'ASSISTANT') {
-			role = 'ASSISTANT';
-		} else {
+		if (mes.char === 'BOT') {
+			role = 'assistant';
+		}else {
 			role = mes.char.toLowerCase();
 		}
 		
@@ -56,6 +53,7 @@ export const getFomalData = (messages = [], systemPrompt = '') => {
 			'content': content
 		};
 		chat_histories.push(newMes);
+		
 	})
 	
 	// 规范化data
@@ -65,6 +63,7 @@ export const getFomalData = (messages = [], systemPrompt = '') => {
 				"stream": false,
 				"temperature": 0.7
 			}
+	console.log("发送数据：");
 	console.log(data);
 	return data
 }
